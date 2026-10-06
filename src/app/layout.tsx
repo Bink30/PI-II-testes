@@ -18,12 +18,19 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
+
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+    
+      <body className="min-h-full flex flex-col">
+        {/* aqui vai estar o conteudo no arquivo page.tsx */}
+        {children}
+      </body>
+    
     </html>
   );
+
 }
