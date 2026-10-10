@@ -1,0 +1,21 @@
+.button {
+  border: 0;
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.primary {
+  background: #7f1d1d;
+  color: white;
+}
+
+.secondary {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.quiet {
+  background: transparent;
+  color: #111827;
+}
