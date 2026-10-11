@@ -1,6 +1,7 @@
 // arquivo de configuração do firebase
 import { initializeApp } from "firebase/app";
-import { getDatabase } from "firebase/database";
+import { getDatabase, connectDatabaseEmulator } from "firebase/database";
+import { getStorage, connectStorageEmulator } from "firebase/storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -16,4 +17,14 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-export const database = getDatabase(app);
+const database = getDatabase(app);
+const storage = getStorage(app);
+
+// conecta no emulador
+if (process.env.NEXT_PUBLIC_IS_DEV) {
+  connectDatabaseEmulator(database, '127.0.0.1', 9000);
+  connectStorageEmulator(storage, '127.0.0.1', 9199);
+}
+
+
+export { database, storage }

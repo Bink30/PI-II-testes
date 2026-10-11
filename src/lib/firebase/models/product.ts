@@ -1,10 +1,10 @@
 import { database } from "../firebase-config";
-import { push, ref, get, child, update, remove } from "firebase/database";
+import { push, ref, get, child, update, remove, set } from "firebase/database";
 import { DataSnapshot } from "firebase/database";
 import cache from "../../cache/localstorage-service";
 
 // modelo dos produtos
-export class Product {
+class Product {
 
     // onde vai ser colocado no firabase
     private refKey: string = "products";
@@ -14,13 +14,26 @@ export class Product {
      * @param name nome do produto
      * @param value valor do produto
      */
-    async save(name: string, value: number): Promise<void> {
+    async save(productId: string, name: string, value: number, imgName: string | null = null,  imgUrl: string | null = null): Promise<void> {
         
-        await push(ref(database, this.refKey), {
+        // await push(ref(database, this.refKey), {
+        //     name: name,
+        //     value: value,
+        //     imgName: imgName,
+        //     imgUrl: imgUrl
+        // });     
+
+        await set(ref(database, this.refKey + `/${productId}`), {
             name: name,
-            value: value
+            value: value,
+            imgName: imgName,
+            imgUrl: imgUrl
         });        
 
+    }
+
+    getNewRandomId(): string {
+        return push(ref(database, this.refKey)).key;
     }
 
     /**
@@ -73,3 +86,6 @@ export class Product {
         await remove(ref(database, `${this.refKey}/${id}`));
     }
 }
+
+const productService = new Product();
+export default productService;
