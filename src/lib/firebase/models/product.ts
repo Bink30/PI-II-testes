@@ -4,6 +4,7 @@ import { DataSnapshot } from "firebase/database";
 import cache from "../../cache/localstorage-service";
 
 export type TypeProduct = {
+    id?: string,
 
     name: string,
     category: string,
