@@ -44,29 +44,6 @@ export default function Header() {
             </svg>
           </button>
 
-          {/* Perfil administrativo */}
-          <button
-            type="button"
-            aria-label="Acesso administrativo"
-            title="Acesso administrativo"
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-red-950 text-white transition hover:bg-red-900"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="21"
-              height="21"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.7"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="12" cy="8" r="4" />
-              <path d="M5 21v-2a7 7 0 0 1 14 0v2" />
-            </svg>
-          </button>
-
         </div>
       </div>
     </header>

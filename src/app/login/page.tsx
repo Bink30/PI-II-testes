@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Button from '@/src/components/Button';
 import Input from '@/src/components/Input';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function LoginPage() {
   const [username, setUsername] = useState('');
@@ -47,31 +48,21 @@ export default function LoginPage() {
     }
   };
 
-  const handleForgotPassword = () => {
-    if (!username.trim()) {
-      setErrors(prev => ({ ...prev, username: 'Preencha este campo para recuperar a senha.' }));
-      return;
-    }
-    console.log(`Mock: Link de recuperação enviado para ${username}`);
-  };
-
-  const handleGoToRegister = () => {
-    router.push('/register');
-  };
-
   return (
     <main className="min-h-screen flex flex-col items-center justify-center p-6 bg-white">
       <div className="w-full max-w-sm flex flex-col items-center">
         
         <div className="mb-8 w-full flex justify-center">
-          <Image
-            src="/images/Logo.svg"
-            alt="Logo da Dádiva Aromaterapia"
-            width={280}
-            height={100}
-            priority
-            className="h-auto w-64 md:w-80 object-contain"
-          />
+          <Link href="/" aria-label="Voltar para a página inicial">
+            <Image
+              src="/images/Logo.svg"
+              alt="Logo da Dádiva Aromaterapia"
+              width={280}
+              height={100}
+              priority
+              className="h-auto w-64 md:w-80 object-contain"
+            />
+          </Link>
         </div>
 
         <form onSubmit={handleLogin} className="w-full flex flex-col gap-5" noValidate>
@@ -96,33 +87,10 @@ export default function LoginPage() {
             error={errors.password}
           />
 
-          <div className="flex justify-end w-full mb-2">
-            <button 
-              type="button" 
-              onClick={handleForgotPassword}
-              className="text-sm text-red-900 hover:text-red-700 hover:underline transition-colors focus:outline-none"
-            >
-              Esqueceu a senha?
-            </button>
-          </div>
-
           <Button type="submit" disabled={loading} className="w-full py-3 text-lg font-medium">
             {loading ? 'Aguarde...' : 'Entrar'}
           </Button>
         </form>
-
-        <div className="mt-6 w-full text-center">
-          <p className="text-sm text-gray-600">
-            Não tem uma conta?{' '}
-            <button 
-              type="button"
-              onClick={handleGoToRegister}
-              className="text-red-900 font-semibold hover:text-red-700 hover:underline transition-colors focus:outline-none"
-            >
-              Cadastre-se
-            </button>
-          </p>
-        </div>
 
       </div>
     </main>

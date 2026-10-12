@@ -6,7 +6,7 @@ type ProductCardProps = {
   descricao: string;
   preco: number;
   categoria: string;
-  imagem: string;
+  imagem: string | null;
 };
 
 export default function ProductCard({
@@ -25,7 +25,7 @@ export default function ProductCard({
     <article className="overflow-hidden rounded-lg border border-gray-200 bg-white p-4">
       <div className="mb-4 overflow-hidden rounded bg-gray-100">
         <img
-            src={imagem}
+            src={imagem || ''}
             alt={nome}
             className="h-40 w-full object-cover"
         />

@@ -1,9 +1,11 @@
 'use client'
 import { useState } from "react";
 import productService from "@/src/lib/firebase/models/product";
+import { TypeProduct } from "@/src/lib/firebase/models/product";
 import imageManipulator from "@/src/lib/image-manipulator/image-manipulator";
 import imageService from "@/src/lib/firebase/storage/image-service";
-
+import AdminHeader from "@/src/components/admin/Header";
+import AdminFormCard from "@/src/components/admin/form-card";
 
 export default function Home() {
   const [img, setImg] = useState<string | null>();
@@ -13,9 +15,11 @@ export default function Home() {
     // impede funcionamento padrão que é de mandar os dados via http para o servidor
     event.preventDefault();
 
+    
+
     try {
       // lida primeiro com a imagem
-      const img = event.target[2].files[0];
+      const img = event.target[4].files[0];
   
       const compressedImg = await imageManipulator.compress(img);
       const imgType = '.' + compressedImg.type.split('/')[1];
@@ -28,10 +32,16 @@ export default function Home() {
       // seria bom adicionar aqui uma forma de apagar a imagem ou tentar de novo se falhar salvar no banco de dados
 
       // lida com banco de dados
-      const productName = event.target[0].value;
-      const productValue = event.target[1].value;
+      const product: TypeProduct = {
+        name: event.target[0].value,
+        description: event.target[1].value,
+        category: event.target[2].value,
+        value: event.target[3].value,
+        imgName: imgName,
+        imgUrl: imgDownloadUrl
+      }
 
-      await productService.save(productKey, productName, productValue, imgName, imgDownloadUrl);
+      await productService.save(productKey, product);
 
       console.log("Produto criado");
 
@@ -45,6 +55,7 @@ export default function Home() {
   return (
 
     <div className="flex flex-col gap-5 rounded border-2 border-black p-5">
+      <AdminHeader/>
       
       {img && 
         <img src={img}></img>
@@ -59,6 +70,32 @@ export default function Home() {
             required
             type="text" 
             id="input_nome_produto" 
+            placeholder="Coloque o nome"
+            className="p-2 rounded border-gray-400 border focus:ring-4 ring-blue-300 transition"
+          />
+
+        </div>
+
+        <div className="flex gap-2 flex-col md:flex-row align-middle justify-items-center">
+          
+          <label htmlFor='input_descricao_produto' className="p-2" >Descrição:</label>
+          <input
+            required
+            type="text" 
+            id="input_descricao_produto" 
+            placeholder="Coloque o nome"
+            className="p-2 rounded border-gray-400 border focus:ring-4 ring-blue-300 transition"
+          />
+
+        </div>
+
+        <div className="flex gap-2 flex-col md:flex-row align-middle justify-items-center">
+          
+          <label htmlFor='input_categoria_produto' className="p-2" >categoria:</label>
+          <input 
+            required
+            type="text" 
+            id="input_categoria_produto" 
             placeholder="Coloque o nome"
             className="p-2 rounded border-gray-400 border focus:ring-4 ring-blue-300 transition"
           />

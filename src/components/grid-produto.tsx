@@ -1,31 +1,38 @@
+'use client'
 import ProductCard from "./card-produto";
+import { TypeProduct } from "../lib/firebase/models/product";
+import { use } from "react";
 
-type Produto = {
-  id: number;
-  nome: string;
-  descricao: string;
-  preco: number;
-  categoria: string;
-  imagem: string;
-};
+// type Produto = {
+//   id: number;
+//   nome: string;
+//   descricao: string;
+//   preco: number;
+//   categoria: string;
+//   imagem: string;
+// };
 
-type GridProps = {
-  produtos: Produto[];
-};
+// type GridProps = {
+//   produtos: Produto[];
+// };
 
-export default function Grid({ produtos }: GridProps) {
+export default function Grid({products}: any) {
+  const allProducts: any[] = use(products);
+
   return (
     <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {produtos.map((produto) => (
+      
+      {allProducts.map((produto: TypeProduct) => (
         <ProductCard
-          key={produto.id}
-          nome={produto.nome}
-          descricao={produto.descricao}
-          preco={produto.preco}
-          categoria={produto.categoria}
-          imagem={produto.imagem}
+          key={produto.imgName}
+          nome={produto.name}
+          descricao={produto.description}
+          preco={produto.value}
+          categoria={produto.category}
+          imagem={produto.imgUrl}
         />
       ))}
+
     </section>
   );
 }

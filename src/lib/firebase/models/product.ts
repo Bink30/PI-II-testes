@@ -3,6 +3,16 @@ import { push, ref, get, child, update, remove, set } from "firebase/database";
 import { DataSnapshot } from "firebase/database";
 import cache from "../../cache/localstorage-service";
 
+export type TypeProduct = {
+
+    name: string,
+    category: string,
+    description: string,
+    value: number,
+    imgName: string | null,
+    imgUrl: string | null,
+}
+
 // modelo dos produtos
 class Product {
 
@@ -14,7 +24,7 @@ class Product {
      * @param name nome do produto
      * @param value valor do produto
      */
-    async save(productId: string, name: string, value: number, imgName: string | null = null,  imgUrl: string | null = null): Promise<void> {
+    async save(productId: string, obj: TypeProduct): Promise<void> {
         
         // await push(ref(database, this.refKey), {
         //     name: name,
@@ -23,13 +33,7 @@ class Product {
         //     imgUrl: imgUrl
         // });     
 
-        await set(ref(database, this.refKey + `/${productId}`), {
-            name: name,
-            value: value,
-            imgName: imgName,
-            imgUrl: imgUrl
-        });        
-
+        await set(ref(database, this.refKey + `/${productId}`), obj);        
     }
 
     getNewRandomId(): string {
@@ -41,7 +45,7 @@ class Product {
      * @param id id caso queira pegar um objeto especifico
      * @returns um ou vários objetos do banco de dados
      */
-    async getData(id: string | null = null): Promise<object> {
+    async getData(id: string | null = null): Promise<TypeProduct[]> {
         let refString = this.refKey;
 
         if (id !== null) {
@@ -50,15 +54,21 @@ class Product {
 
         let cacheData = cache.getItem(refString);
         if (cacheData !== null) {
-            return cacheData;
+            return JSON.parse(cacheData);
         }
         
         let snapshot: DataSnapshot = await get(child(ref(database), refString));
-        let obj = snapshot.val();
+        let response = snapshot.val();
 
-        cache.store(refString, obj);
+        let objs: any[] = [];
+        // transformar objeto em array
+        if (typeof response === 'object') {
+            objs = Object.values(response);
+        } 
 
-        return obj;
+        cache.store(refString, JSON.stringify(objs));
+
+        return objs;
     }
 
     /**
